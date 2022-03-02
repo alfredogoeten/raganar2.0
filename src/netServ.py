@@ -19,11 +19,9 @@
 	### This will avoid the ICMP function errors
 '''
 
-import gettext
 import logging
 import random
 import requests
-import subprocess
 import socket
 import ssl
 import string
@@ -31,7 +29,6 @@ import sys
 import threading
 import time
 import urllib
-import subprocess
 
 
 from urlparse import urlparse
