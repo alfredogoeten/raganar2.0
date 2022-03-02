@@ -1,13 +1,3 @@
-'''
-
-    #### For this module to work, you will need to:
-
-    1 - Install python-magic
-        https://github.com/ahupp/python-magic
-
-    ####
-'''
-
 import hashlib
 import magic
 import os
