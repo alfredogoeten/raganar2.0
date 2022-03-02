@@ -156,7 +156,7 @@ def protocolAnalysis(shouldNOTBeOffered, mustBeOffered, beingOffered):
 '''
 
 
-def transCryptDirect(lang):
+def transCryptDirect():
     # Get the interface information
     url = raw_input(_("Endereco da interface para teste (com a porta): "))
     parsed = urlparse(url)
@@ -207,7 +207,7 @@ def transCryptDirect(lang):
     # [1] Testing the protocols
     printLine()
     print bcolors.HEADER + '[1] ' + bcolors.ENDC + (_('Testando Protocolos'))
-    (worked, protocolList) = testProtocols(lang, url, port)
+    (worked, protocolList) = testProtocols(url, port)
     if (not worked):
         pause()
         return
@@ -368,7 +368,7 @@ def testPFSCipherOld(url, port, cipher):
 '''
 
 
-def testProtocols(lang, url, port):
+def testProtocols(url, port):
     # List of avaiable protocols
     protocolList = []
 
@@ -467,19 +467,10 @@ def testWeakCipher(host, port, protocolList):
 '''
 
 
-def transCryptMenu(lang):
-    # Change the software language
-    import gettext
-    global _
-    if lang == 'pt':
-        def _(s):
-            return s
-    else:
-        lg = gettext.translation(
-            'transcrypt', localedir='locale', languages=[lang])
-        lg.install()
-        _ = lg.gettext
-
+def transCryptMenu():
+    global _    
+    def _(s):return s
+    
     # Basic definitions for the module menu
     menuOpts = {0: '0', 1: 'transCryptDirect'}
 
@@ -498,7 +489,7 @@ def transCryptMenu(lang):
         if opt == 0:
             return
         if opt in menuOpts:
-            subModule[menuOpts[opt]](lang)
+            subModule[menuOpts[opt]]()
         else:
             clear()
             print _('Escolha invalida')
@@ -573,4 +564,4 @@ def verifyProtocol(host, port, protoVersion):
 
 
 if __name__ == '__main__':
-    transCryptMenu('en')
+    transCryptMenu()

@@ -304,7 +304,7 @@ def doshttp():
 '''
 
 
-def portScanner(lang, server, ignoreFilter, portRange, scanCommon, showMsg):
+def portScanner(server, ignoreFilter, portRange, scanCommon, showMsg):
     # If the showMsg flag is defined: clean the screen and print the header of the port information
     if showMsg:
         clear()
@@ -430,7 +430,7 @@ def portScanner(lang, server, ignoreFilter, portRange, scanCommon, showMsg):
 '''
 
 
-def netServDirect(lang):
+def netServDirect():
     # Try to connect to the website
     url = raw_input(_("Endereco da interface para teste (sem a porta): "))
     parsed = urlparse(url)
@@ -466,37 +466,37 @@ def netServDirect(lang):
     if selection == 'a':
         ignore = (
             raw_input(_('Digite \'i\' para nao mostrar as portas filtradas\n')) == 'i')
-        openPorts = portScanner(lang, url, ignore, range(1, 1025), True, True)
+        openPorts = portScanner( url, ignore, range(1, 1025), True, True)
     else:
         clear()
         print bcolors.BOLD + _("Porta\t\tServico\t\t\tEstado") + bcolors.ENDC
         for port in selection.split(','):
             port = int(port)
             openPorts.append(port)
-        openPorts = portScanner(lang, url, False, openPorts, False, True)
+        openPorts = portScanner(url, False, openPorts, False, True)
 
     # [1] Testing Https use
     printLine()
     print bcolors.HEADER + '[1] ' + bcolors.ENDC + \
         (_('Analise do servidor pelas portas [Banner Grabbing]'))
-    testOpenPorts(lang, url, openPorts)
+    testOpenPorts(url, openPorts)
 
     # [2] Testing server resilience to DDOS Attacks
     printLine()
     print bcolors.HEADER + '[2] ' + bcolors.ENDC + \
         (_('Teste de resistencia a DDOS'))
-    testDDoS(lang, url, openPorts)
+    testDDoS(url, openPorts)
 
     # [3] Fuzzer testing
     printLine()
     print bcolors.HEADER + '[3] ' + bcolors.ENDC + \
         (_('Teste de fuzz com strings montadas e strings aleatorias'))
-    print testFuzz(lang, url, openPorts)
+    print testFuzz(url, openPorts)
 
     # [4] Searching for open test ports | Already implemented, just an idea for improvement. IF you want to use, remove the '#' in the comments below
     # printLine()
     # print bcolors.HEADER + '[4] ' + bcolors.ENDC + (_('Verificando portas de teste abertas'))
-    # print verifyOpenTestPorts(lang,url, openPorts if (selection == 'a') else portScanner(lang,url,True,range(1,1025),True,False))
+    # print verifyOpenTestPorts(url, openPorts if (selection == 'a') else portScanner(url,True,range(1,1025),True,False))
     pause()
 
 
@@ -505,20 +505,13 @@ def netServDirect(lang):
 '''
 
 
-def netServMenu(lang):
+def netServMenu():
     # Import the clear function
-    global clear
-
-    # Change the software language (just a PoC to future implementation)
-    import gettext
+    global clear    
+    
     global _
-    if lang == 'pt':
-        def _(s): return s
-    else:
-        lg = gettext.translation(
-            'netServ', localedir='locale', languages=[lang])
-        lg.install()
-        _ = lg.gettext
+    
+    def _(s): return s    
 
     # Basic definitions for the module menu
     menuOpts = {0: '0', 1: 'netServDirect'}
@@ -538,7 +531,7 @@ def netServMenu(lang):
         if opt == 0:
             return
         if opt in menuOpts:
-            subModule[menuOpts[opt]](lang)
+            subModule[menuOpts[opt]]()
         else:
             clear()
             print _('Escolha invalida')
@@ -552,7 +545,7 @@ def netServMenu(lang):
 '''
 
 
-def responseTimeTest(lang, url, port):
+def responseTimeTest(url, port):
     # Try to estabilish the connection
     try:
         # Define the socket
@@ -624,7 +617,7 @@ def testBots():
 '''
 
 
-def testDDoS(lang, url, openPorts):
+def testDDoS(url, openPorts):
     print _('Iniciando ataque')
 
     # For each port, 	perform HTTP and Syn Flood attack,
@@ -634,7 +627,7 @@ def testDDoS(lang, url, openPorts):
         print '\n' + _('[+] Porta ') + str(port)
 
         print _('[|] Tempo de resposta inicial: ') + \
-            responseTimeTest(lang, url, port)
+            responseTimeTest(url, port)
         # Perform an HTTP Flood attack using http markup validation services and print the number of packets sent/received
         print _('[|] HTTP Flood: Realizando DDoS... '),
         httpAtkResponse = ddosAtkHttp(url, port)
@@ -642,14 +635,14 @@ def testDDoS(lang, url, openPorts):
             '({:.1%})'.format((float(httpAtkResponse[1]) / float(httpAtkResponse[0]))) if (
                 httpAtkResponse[0] != 0) else '') + _(' com sucesso. ')
         print _('[|] - Tempo de resposta apos o flood: ') + \
-            responseTimeTest(lang, url, port)
+            responseTimeTest(url, port)
 
         # Perform a SYN Flood basic attack and print the number of packets sent/received
         print _('[|] Syn Flood: Realizando DDoS... '),
         synAtkResponse = ddosAtkSyn(url, port)
         print str(synAtkResponse) + _(' pacotes/segmentos enviados')
         print _('[|] - Tempo de resposta apos o flood: ') + \
-            responseTimeTest(lang, url, port)
+            responseTimeTest(url, port)
 
     # Print the response time before and after each ddos test
 
@@ -659,7 +652,7 @@ def testDDoS(lang, url, openPorts):
 '''
 
 
-def testFuzz(lang, url, openPorts):
+def testFuzz(url, openPorts):
     # Define the time of the fuzzing tests
     secondsOfTest = 7
 
@@ -733,7 +726,7 @@ def sendFuzz(url, port, startString, endString, secondsOfTest):
 '''
 
 
-def testOpenPorts(lang, url, openPorts):
+def testOpenPorts(url, openPorts):
     # Just starting the flag of problems detected and the msg to avoid using undefined variables
     problemDetect = False
     warningMsg = ""
@@ -799,7 +792,7 @@ def testOpenPorts(lang, url, openPorts):
 '''
 
 
-def verifyOpenTestPorts(lang, url, openPorts):
+def verifyOpenTestPorts(url, openPorts):
     # Start the list of Test Ports as empty and the found flag as False
     testPortFound = False
 
@@ -823,4 +816,4 @@ def verifyOpenTestPorts(lang, url, openPorts):
 
 
 if __name__ == '__main__':
-    netServMenu('en')
+    netServMenu()

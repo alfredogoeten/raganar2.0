@@ -72,17 +72,12 @@ def getType(fileName):
 '''
 
 
-def mrBinMenu(lang):
-    # Change the software language
-    import gettext
+def mrBinMenu():
+     
     global _
-    if lang == 'pt':
-        def _(s):
-            return s
-    else:
-        lg = gettext.translation('mrBin', localedir='locale', languages=[lang])
-        lg.install()
-        _ = lg.gettext
+    
+    def _(s):return s
+ 
 
     # Basic definitions for the module menu
     menuOpts = {0: '0', 1: 'mrBinDirect'}
@@ -102,7 +97,7 @@ def mrBinMenu(lang):
         if opt == 0:
             return
         if opt in menuOpts:
-            subModule[menuOpts[opt]](lang)
+            subModule[menuOpts[opt]]()
         else:
             clear()
             print _('Escolha invalida')
@@ -121,7 +116,7 @@ def removeFiles(folder):
             shutil.rmtree(os.path.join(root, d))
 
 
-def mrBinDirect(lang):
+def mrBinDirect():
     # Get the file information
     fileName = raw_input(_("Nome do Arquivo (com extensao): "))
     fullName = pathFolder + fileName
@@ -303,4 +298,4 @@ def strings(fileName, min):
 
 
 if __name__ == '__main__':
-    mrBinMenu('pt')
+    mrBinMenu()

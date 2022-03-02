@@ -319,7 +319,7 @@ def printLine():
     pass
 
 
-def getLoginPage(site, lang):
+def getLoginPage(site):
     pageFound = 0
     var2 = 0
     hdr = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}

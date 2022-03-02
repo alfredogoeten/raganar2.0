@@ -59,7 +59,7 @@ status_code = {200: ' OK',
 '''
 
 
-def detectWAF(url, port, lang):
+def detectWAF(url, port):
     import logging
 
     noWAF = _("\nWeb Application Firewall nao detectado")
@@ -99,7 +99,7 @@ def detectWAF(url, port, lang):
 '''
 
 
-def detectWAF2(url, lang):
+def detectWAF2(url):
     maliciousRequest = mechanize.Browser()
     maliciousRequest.set_handle_robots(False)
     maliciousRequest.addheaders = [
@@ -159,8 +159,8 @@ def detectWAF2(url, lang):
 '''
 
 
-def getLoginPages(url, lang):
-    loginT = getLoginPage(url, lang)  # = (msg,pageFound,pageList)
+def getLoginPages(url):
+    loginT = getLoginPage(url)  # = (msg,pageFound,pageList)
     response = _('Resposta: ') + loginT['msg'] + buildResponse(loginT['pageFound'] == 0, _(
         '\nPaginas de Login OK'), _('\n[+] Paginas de Login contem url comum:'))
 
@@ -229,7 +229,7 @@ def getTextControls(htmlText):
 '''
 
 
-def showInf(lang):
+def showInf():
     import netifaces
     clear()
     print (_("Interfaces"))
@@ -271,7 +271,7 @@ def sqli(url, path, param, stringInj):
 '''
 
 
-def testHttps(url, lang):
+def testHttps(url):
     global status_code, ssl
     try:
         r = requests.get('https://'+url)
@@ -294,7 +294,7 @@ def testHttps(url, lang):
 '''
 
 
-def testClickJack(url, lang):
+def testClickJack(url):
     # Read the return of a "GET" request
     r = requests.get('http://'+url)
     validation = ('X-Frame-Options' in r.headers)
@@ -314,7 +314,7 @@ def testClickJack(url, lang):
 '''
 
 
-def testSQLi(url, paths, lang):
+def testSQLi(url, paths):
     import socket
     import sys
     import requests
@@ -374,7 +374,7 @@ def testSQLi(url, paths, lang):
 '''
 
 
-def testXSS(url, lang):
+def testXSS(url):
     crawler = Crawler(CrawlerCache('crawler.db'))
     root_re = re.compile('^/$').match
 
@@ -430,7 +430,7 @@ def testXSS(url, lang):
 '''
 
 
-def webIDirect(lang):
+def webIDirect():
     global status_code
     removedSlash = False
 
@@ -501,19 +501,19 @@ def webIDirect(lang):
     # [1] Testing Https use
     printLine()
     print bcolors.HEADER + '[1] ' + bcolors.ENDC + (_('Uso de HTTPS'))
-    print testHttps(url, lang)
+    print testHttps(url)
 
     # [2] Testing Protection against Clickjack/UI Redress
     printLine()
     print bcolors.HEADER + '[2] ' + bcolors.ENDC + \
         (_('Protecao contra Clickjack/UI Redress'))
-    print testClickJack(url, lang)
+    print testClickJack(url)
 
     # [3] Testing if the login or admin pages can be easily found
     printLine()
     print bcolors.HEADER + '[3] ' + bcolors.ENDC + \
         (_('Paginas de Login e Admin'))
-    possibleUrlResponse = getLoginPages(url, lang)
+    possibleUrlResponse = getLoginPages(url)
     print possibleUrlResponse[0]
 
     # [4] Testing SQLi attack
@@ -531,19 +531,19 @@ def webIDirect(lang):
             _('Deseja incluir mais algum teste?:\n1 - Sim\n2 - Nao\n'))
         pass
     if len(possibleUrlResponse[1]) != 0:
-        print testSQLi(url, possibleUrlResponse[1], lang)
+        print testSQLi(url, possibleUrlResponse[1])
 
     # [5] Testing XSS vulnerabilities
     printLine()
     print bcolors.HEADER + '[5] ' + bcolors.ENDC + \
         (_('XSS - Cross-site Scripting'))
-    print testXSS(url, lang)
+    print testXSS(url)
 
     # [6] Testing if there is a Web Application Firewall
     printLine()
     print bcolors.HEADER + '[6] ' + bcolors.ENDC + \
         (_('Web Application Firewall'))
-    print detectWAF(ipAddr, port, lang)
+    print detectWAF(ipAddr, port)
     pause()
 
     pass
@@ -554,17 +554,12 @@ def webIDirect(lang):
 '''
 
 
-def webIMenu(lang):
-    # Change the software language
-    import gettext
+def webIMenu():
+        
     global _
-    if lang == 'pt':
-        def _(s): return s
-    else:
-        lg = gettext.translation('webI', localedir='locale', languages=[lang])
-        lg.install()
-        _ = lg.gettext
-
+    
+    def _(s): return s
+    
     # Basic definitions for the module menu
     menuOpts = {0: '0', 1: 'showInf', 2: 'webIDirect'}
 
@@ -584,7 +579,7 @@ def webIMenu(lang):
         if opt == 0:
             return
         if opt in menuOpts:
-            subModule[menuOpts[opt]](lang)
+            subModule[menuOpts[opt]]()
         else:
             clear()
             print _('Escolha invalida')
@@ -630,4 +625,4 @@ def xss(url):
 
 
 if __name__ == '__main__':
-    webIMenu('en')
+    webIMenu()

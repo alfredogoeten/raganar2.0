@@ -9,11 +9,11 @@ import webI
 import netServ
 from utils import clear
 
-langSelec = {'en': 'English selected', 'pt': 'Portugues selecionado'}
+
 
 # Basic definitions for the program
 menuOpts = {0: 'exit', 1: 'webI', 2: 'netServ'}
-langOpts = {'en', 'pt'}
+
 
 '''
 	Main Class of the program, coordinate all penetration tests
@@ -23,19 +23,10 @@ langOpts = {'en', 'pt'}
 '''
 	If the module is called with 'python ragnar.py', this tests are executed.
 '''
-# Language Selection
-while True:
-    lang = raw_input("'pt' - Portugues\n'en' - English\n")
-    if lang in langOpts:
-        print(langSelec[lang])
-        break
 
 # Change the software language
-if lang == 'pt':
-    def _(s): return s
-else:
-    lg = gettext.translation('ragnar', localedir='locale', languages=[lang])
-    lg.install()
+lang = 'en'
+def _(s): return s
 
 # Main Menu and submodules definition
 print(_('Escolha o Modulo a ser executado'))
