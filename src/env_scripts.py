@@ -1,11 +1,11 @@
 import os
 
-commands = ['sudo apt-get remove python3 -f',
-            'sudo apt install python2 -f',
-            'sudo apt install python-pip -f',
-            'sudo apt-get install python2-dev -f',
-            'sudo apt-get install libssl-dev libffi-dev -f',
-            'sudo apt-get install libmagic1 -f',
+commands = ['sudo apt-get remove -y python3',
+            'sudo apt install -y python2',
+            'sudo apt install -y python-pip',
+            'sudo apt-get install -y python2-dev',
+            'sudo apt-get install -y libssl-dev libffi-dev',
+            'sudo apt-get install -y libmagic1',
             'pip2 install mechanize',
             'pip2 install scapy==2.3.3',
             'pip2 install uefi_firmware',
