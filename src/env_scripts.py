@@ -1,11 +1,11 @@
-import subprocess
+import os
 
-commands = ['sudo apt-get remove python3',
-            'sudo apt install python2',
-            'sudo apt install python-pip',
-            'sudo apt-get install python2-dev',
-            'sudo apt-get install libssl-dev libffi-dev',
-            'sudo apt-get install libmagic1'
+commands = ['sudo apt-get remove python3 -f',
+            'sudo apt install python2 -f',
+            'sudo apt install python-pip -f',
+            'sudo apt-get install python2-dev -f',
+            'sudo apt-get install libssl-dev libffi-dev -f',
+            'sudo apt-get install libmagic1 -f',
             'pip2 install mechanize',
             'pip2 install scapy==2.3.3',
             'pip2 install uefi_firmware',
@@ -16,7 +16,5 @@ commands = ['sudo apt-get remove python3',
             'pip2 install python-magic']
 
 
-process = subprocess.Popen(
-    '/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-out, err = process.communicate(commands.encode('utf-8'))
-print(out.decode('utf-8'))
+for command in commands:
+    os.system(command)
