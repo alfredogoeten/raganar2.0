@@ -1,7 +1,6 @@
 import os
 
-commands = ['sudo apt-get remove -y python3',
-            'sudo apt install -y python2',
+commands = ['sudo apt install -y python2',
             'sudo apt install -y python-pip',
             'sudo apt-get install -y python2-dev',
             'sudo apt-get install -y libssl-dev libffi-dev',
