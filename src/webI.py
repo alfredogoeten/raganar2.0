@@ -256,8 +256,8 @@ def sqli(url, path, param, stringInj):
 				print result.status_code'''
 
     # Try to to a GET on the url with the string on the parameter
-    respT = urllib2.Request('http://' + url + path +
-                            '?' + param + '=' + stringInj, headers=hdr)
+    respT = urllib2.Request(('http://' + url + path +
+                            '?' + param + '=' + stringInj).replace(" ", "%20"), headers=hdr)
     resp = urllib2.urlopen(respT)
     body = resp.read()
 
