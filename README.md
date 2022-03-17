@@ -4,11 +4,9 @@ Penetration Testing Tool for Internet of Things Devices.
 More friendly, easy to run and improved version of the original [Ragnar](https://github.com/imperador/ragnar).
 
 ## Run
-    1. Clone this repo
-    2. sudo su
-    3. sudo apt-get update
-    4. Run 'env_scripts.py' for dependencies
-    5. Run 'ragnar.py'
+    1. Clone this repo    
+    2. Run 'env_scripts.py' for dependencies
+    3. Run 'ragnar.py'
 ## Modules
 ### Web Interface (WebI)
   
